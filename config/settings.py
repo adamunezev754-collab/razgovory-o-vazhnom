@@ -79,7 +79,7 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.environ.get('DATABASE_PATH', BASE_DIR / 'db.sqlite3'),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -127,7 +127,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Настройки для загрузки файлов
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.environ.get('MEDIA_PATH', BASE_DIR / 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Настройки дизайна админки (Jazzmin)
 JAZZMIN_SETTINGS = {
