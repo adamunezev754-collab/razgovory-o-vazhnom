@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-вставьте_сюда_ваш_секретны�
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -141,3 +141,5 @@ JAZZMIN_SETTINGS = {
     "custom_css": None,
     "custom_js": None,
 }
+import os
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-запасной-ключ-для-локальной-работы')
