@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-вставьте_сюда_ваш_секретный_ключ_из_старого_файла'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -32,14 +32,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',  # <-- Добавили тему для админки
+    'jazzmin',  # <-- Тема для админки
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lessons.apps.LessonsConfig', # <-- Сделали красивое название приложения
+    'lessons.apps.LessonsConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,7 +75,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -106,9 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru' # <-- Перевели на русский
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'Europe/Moscow' # <-- Установили московское время
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -119,6 +118,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.1/ref/settings/#default-auto-field
@@ -138,9 +138,10 @@ JAZZMIN_SETTINGS = {
     "copyright": "Разговоры о важном",
     "search_model": ["lessons.Lesson"],
     "show_ui_builder": False,
-    "theme": "flatly", # Светлая и современная тема
+    "theme": "flatly",
     "custom_css": None,
     "custom_js": None,
 }
-import os
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-запасной-ключ-для-локальной-работы')
+
+# Доверенные источники для CSRF (важно для работы админки на хостинге)
+CSRF_TRUSTED_ORIGINS = ['https://razgovory-o-vazhnom.de2.netrun.io']
