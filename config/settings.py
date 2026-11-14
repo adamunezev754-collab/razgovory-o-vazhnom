@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -145,3 +146,4 @@ JAZZMIN_SETTINGS = {
 
 # Доверенные источники для CSRF (важно для работы админки на хостинге)
 CSRF_TRUSTED_ORIGINS = ['https://razgovory-o-vazhnom.de2.netrun.io']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
