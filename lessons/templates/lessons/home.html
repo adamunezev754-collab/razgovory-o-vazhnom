@@ -1,0 +1,183 @@
+{% extends 'lessons/base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Новый баннер -->
+    <div class="main-banner">
+        <h1 class="main-title">РАЗГОВОРЫ О ВАЖНОМ</h1>
+        <p class="main-subtitle">Каждый понедельник первым занятием во всех школах и СПО страны проходят «Разговоры о важном». Основные темы связаны с ключевыми аспектами жизни человека в современной России.</p>
+    </div>
+
+    <!-- Блок важных документов -->
+    <div class="documents-block">
+        <div class="doc-header">
+            <span class="badge">Важные документы</span>
+        </div>
+        <div class="doc-list">
+            {% for doc in documents %}
+            <div class="doc-item">
+                <div class="doc-icon">📄</div>
+                <div class="doc-info">
+                    <a href="{{ doc.file.url }}" target="_blank" class="doc-title">{{ doc.title }}</a>
+                    <div class="doc-actions">
+                        <a href="{{ doc.file.url }}" target="_blank">👁 открыть</a>
+                        <a href="{{ doc.file.url }}" download>⬇ скачать</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color: #666;">Документы пока не добавлены (загрузите их в админке).</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Сетка классов -->
+    <div class="classes-grid">
+        {% for cover in covers %}
+        <a href="{% url 'class_lessons' cover.code %}" class="class-card" style="background-image: url('{{ cover.image_url }}');">
+            <div class="class-badge">{{ cover.name }}</div>
+            <div class="arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* Стили для баннера */
+    .main-banner {
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+    .main-title {
+        color: #1976d2;
+        font-size: 42px;
+        font-weight: 800;
+        margin-top: 0;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+    .main-subtitle {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* Стили для важных документов */
+    .documents-block {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .badge {
+        background-color: #1976d2;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    .doc-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .doc-item {
+        display: flex;
+        align-items: center;
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 10px;
+        transition: background 0.3s;
+    }
+    .doc-item:hover {
+        background: #f0f0f0;
+    }
+    .doc-icon {
+        font-size: 24px;
+        margin-right: 15px;
+        background: #e0e0e0;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .doc-info {
+        display: flex;
+        flex-direction: column;
+    }
+    .doc-title {
+        font-weight: 600;
+        color: #333;
+        text-decoration: none;
+        margin-bottom: 5px;
+    }
+    .doc-title:hover {
+        color: #1976d2;
+    }
+    .doc-actions a {
+        font-size: 12px;
+        color: #666;
+        text-decoration: none;
+        margin-right: 15px;
+    }
+    .doc-actions a:hover {
+        text-decoration: underline;
+    }
+
+    /* Сетка классов */
+    .classes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+    .class-card {
+        position: relative;
+        height: 180px;
+        border-radius: 20px;
+        background-size: cover;
+        background-position: center;
+        text-decoration: none;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+    .class-card:hover {
+        transform: translateY(-5px);
+    }
+    .class-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+        z-index: 1;
+    }
+    .class-badge {
+        background-color: #1976d2;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+    }
+    .arrow {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        color: white;
+        font-size: 24px;
+        z-index: 2;
+    }
+</style>
+{% endblock %}

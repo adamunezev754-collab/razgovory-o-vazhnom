@@ -1,0 +1,175 @@
+{% extends 'lessons/base.html' %}
+
+{% block title %}{{ lesson.title }} - Разговоры о важном{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-bottom: 20px;">
+        {% if lesson.target_audience %}
+            <a href="{% url 'class_lessons' lesson.target_audience %}" style="color: #1976d2; text-decoration: none; font-weight: 600;">← Назад к занятиям</a>
+        {% else %}
+            <a href="{% url 'home' %}" style="color: #1976d2; text-decoration: none; font-weight: 600;">← На главную</a>
+        {% endif %}
+    </div>
+
+    <!-- Обложка и заголовок -->
+    <div class="lesson-header">
+        <h1 style="font-size: 32px; color: #333; margin-bottom: 10px;">{{ lesson.title }}</h1>
+        <div class="lesson-meta">
+            <span class="date-badge">{{ lesson.date|date:"j E Y" }}</span>
+            <span class="class-badge">
+                {% if lesson.for_all_classes %}Все классы{% else %}{{ lesson.get_target_audience_display }}{% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="lesson-content-wrapper">
+        <!-- Левая колонка: Обложка и описание -->
+        <div class="lesson-left">
+            {% if lesson.cover_image %}
+                <img src="{{ lesson.cover_image.url }}" class="cover-image" alt="{{ lesson.title }}">
+            {% else %}
+                <div class="no-cover">Обложка не загружена</div>
+            {% endif %}
+            <p class="description">{{ lesson.description }}</p>
+        </div>
+
+        <!-- Правая колонка: Материалы -->
+        <div class="lesson-right">
+            <h3 style="margin-top: 0; color: #1976d2;">Материалы для проведения занятия</h3>
+            
+            <div class="materials-list">
+                {% if lesson.files_later %}
+                    <div style="background: #e3f2fd; color: #1976d2; padding: 20px; border-radius: 10px; font-weight: 600; text-align: center; border: 2px dashed #1976d2;">
+                        Дорогие пользователи! Материалы будут загружены позже. Ожидайте!
+                    </div>
+                {% else %}
+                    {% for material in lesson.materials.all %}
+                    <div class="material-item">
+                        <div class="material-icon">
+                            {% if material.file_type == 'script' %}📄
+                            {% elif material.file_type == 'presentation' %}📊
+                            {% elif material.file_type == 'video' %}🎥
+                            {% else %}📁{% endif %}
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">{{ material.title }}</div>
+                            <div class="material-actions">
+                                <a href="{{ material.file.url }}" target="_blank">👁 открыть</a>
+                                <a href="{{ material.file.url }}" download>⬇ скачать</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="color: #666;">К этому занятию пока не прикреплены файлы.</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .lesson-header {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .lesson-meta {
+        display: flex;
+        gap: 15px;
+    }
+    .date-badge, .class-badge {
+        background-color: #1976d2;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .class-badge {
+        background-color: #1a237e;
+    }
+
+    .lesson-content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    @media (max-width: 768px) {
+        .lesson-content-wrapper {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .lesson-left, .lesson-right {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .cover-image {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .no-cover {
+        height: 250px;
+        background: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        color: #888;
+        margin-bottom: 20px;
+    }
+    .description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .materials-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .material-item {
+        display: flex;
+        align-items: center;
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    .material-icon {
+        font-size: 24px;
+        margin-right: 15px;
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .material-info {
+        display: flex;
+        flex-direction: column;
+    }
+    .material-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    .material-actions a {
+        font-size: 13px;
+        color: #1976d2;
+        text-decoration: none;
+        margin-right: 15px;
+        font-weight: 600;
+    }
+    .material-actions a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

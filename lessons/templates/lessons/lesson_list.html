@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Разговоры о важном</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
+        .lesson { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .lesson h2 a { text-decoration: none; color: #0055aa; }
+        .meta { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Разговоры о важном</h1>
+    {% for lesson in lessons %}
+        <div class="lesson">
+            <h2><a href="{% url 'lesson_detail' lesson.pk %}">{{ lesson.title }}</a></h2>
+            <p class="meta">{{ lesson.date }} | {{ lesson.get_target_audience_display }}</p>
+            <p>{{ lesson.description }}</p>
+        </div>
+    {% empty %}
+        <p>Занятий пока нет.</p>
+    {% endfor %}
+</body>
+</html>

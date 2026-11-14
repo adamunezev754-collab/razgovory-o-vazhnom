@@ -1,0 +1,81 @@
+{% extends 'lessons/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'home' %}" style="color: #e91e63; text-decoration: none; font-weight: 600;">← Выбрать другой возраст</a>
+    </div>
+
+    <h1 style="font-size: 28px; margin-bottom: 30px;">{{ class_display }}</h1>
+
+    <div class="lessons-grid">
+        {% for lesson in lessons %}
+            <div class="lesson-card">
+                <a href="{% url 'lesson_detail' lesson.pk %}">
+                    {% if lesson.cover_image %}
+                        <img src="{{ lesson.cover_image.url }}" class="lesson-img" alt="{{ lesson.title }}">
+                    {% else %}
+                        <div style="height: 180px; background: #ddd; display: flex; align-items: center; justify-content: center; color: #666;">Нет обложки</div>
+                    {% endif %}
+                    
+                    <div class="lesson-info">
+                        <div class="lesson-date">{{ lesson.date|date:"j E" }}</div>
+                        <div class="lesson-title">{{ lesson.title }}</div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p style="grid-column: 1 / -1; text-align: center; color: #666; padding: 40px;">В этом классе пока нет занятий. Добавьте их через админку.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .lessons-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+    .lesson-card {
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s;
+    }
+    .lesson-card:hover {
+        transform: translateY(-5px);
+    }
+    .lesson-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    .lesson-info {
+        padding: 20px 15px 15px 15px;
+        position: relative;
+    }
+    .lesson-date {
+        background-color: #e91e63;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        position: absolute;
+        top: -15px;
+        left: 15px;
+        text-transform: uppercase;
+    }
+    .lesson-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-top: 5px;
+        line-height: 1.4;
+    }
+    a {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
