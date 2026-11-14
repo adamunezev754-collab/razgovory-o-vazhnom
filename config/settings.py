@@ -128,7 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Настройки для загрузки файлов
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/data/media'
 
 # Настройки дизайна админки (Jazzmin)
 JAZZMIN_SETTINGS = {
