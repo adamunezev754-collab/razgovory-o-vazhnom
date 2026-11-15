@@ -8,5 +8,6 @@ urlpatterns = [
     path('', include('lessons.urls')),
 ]
 
+# Раздача медиафайлов (картинок) в локальном режиме
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-вставьте_сюда_ваш_секретный_ключ_из_старого_файла'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,7 +128,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Настройки для загрузки файлов
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/data/media'
+import os
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 
 # Настройки дизайна админки (Jazzmin)
 JAZZMIN_SETTINGS = {
