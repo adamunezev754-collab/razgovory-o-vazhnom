@@ -2,38 +2,27 @@
 
 {% block content %}
 <div class="container">
-    <!-- БАННЕР: текст слева, картинка справа -->
-    <div class="hero-section">
-        <div class="hero-text">
-            <h1 class="main-title">РАЗГОВОРЫ О ВАЖНОМ</h1>
-            <p class="main-subtitle text-light">Каждый понедельник первым занятием во всех школах и СПО страны проходят «Разговоры о важном». Основные темы связаны с ключевыми аспектами жизни человека в современной России.</p>
-        </div>
-        <div class="hero-image">
-            {% if settings and settings.main_logo %}
-                <img src="{{ settings.main_logo.url }}" alt="Главное фото">
-            {% else %}
-                <div style="width:100%; height:100%; background: var(--glass-bg); border-radius: 30px; display:flex; align-items:center; justify-content:center; border: 2px dashed var(--glass-border);">
-                    <span style="color: var(--text-muted); font-size: 14px;">Загрузите логотип для главной в админке</span>
-                </div>
-            {% endif %}
-        </div>
+    <!-- БАННЕР (По центру) -->
+    <div class="hero-section glass-panel" style="text-align: center; padding: 60px 40px; margin-bottom: 60px;">
+        <h1 class="main-title" style="margin-bottom: 20px; font-size: 56px; color: var(--primary-color); text-shadow: 0 4px 20px var(--primary-glow); line-height: 1.1;">РАЗГОВОРЫ О ВАЖНОМ</h1>
+        <p class="main-subtitle text-light" style="max-width: 800px; margin: 0 auto; font-size: 18px; line-height: 1.6;">Каждый понедельник первым занятием во всех школах и СПО страны проходят «Разговоры о важном». Основные темы связаны с ключевыми аспектами жизни человека в современной России.</p>
     </div>
 
     <!-- ОБЪЯВЛЕНИЯ (Карусель) -->
     {% if announcements %}
-    <div class="announcements-section">
-        <h2 class="section-title">ОБЪЯВЛЕНИЯ</h2>
-        <div class="carousel-container">
-            <div class="carousel-track" id="carouselTrack">
+    <div class="announcements-section" style="margin-bottom: 60px;">
+        <h2 class="section-title" style="font-size: 28px; margin-bottom: 30px; color: var(--text-main); border-left: 5px solid var(--primary-color); padding-left: 15px;">ОБЪЯВЛЕНИЯ</h2>
+        <div class="carousel-container" style="overflow: hidden; border-radius: 30px;">
+            <div class="carousel-track" id="carouselTrack" style="display: flex; transition: transform 0.5s ease-in-out;">
                 {% for ann in announcements %}
-                <div class="announcement-card glass-panel">
+                <div class="announcement-card glass-panel" style="min-width: 100%; display: flex; gap: 30px; padding: 30px; align-items: center;">
                     {% if ann.image %}
-                        <img src="{{ ann.image.url }}" class="ann-img" alt="{{ ann.title }}">
+                        <img src="{{ ann.image.url }}" class="ann-img" style="width: 300px; height: 200px; object-fit: cover; border-radius: 20px;" alt="{{ ann.title }}">
                     {% endif %}
                     <div class="ann-content">
-                        <h3>{{ ann.title }}</h3>
+                        <h3 style="font-size: 24px; margin: 0 0 15px 0;">{{ ann.title }}</h3>
                         <p class="text-light">{{ ann.description|truncatewords:15 }}</p>
-                        <a href="{{ ann.link|default:'#' }}" target="_blank" class="ann-link">Подробнее →</a>
+                        <a href="{{ ann.link|default:'#' }}" target="_blank" style="display: inline-block; margin-top: 15px; color: var(--primary-color); text-decoration: none; font-weight: 600;">Подробнее →</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -44,12 +33,13 @@
 
     <!-- ЗАНЯТИЯ (Классы) -->
     <div class="classes-section">
-        <h2 class="section-title">ЗАНЯТИЯ</h2>
-        <div class="classes-grid">
+        <h2 class="section-title" style="font-size: 28px; margin-bottom: 30px; color: var(--text-main); border-left: 5px solid var(--primary-color); padding-left: 15px;">ЗАНЯТИЯ</h2>
+        <div class="classes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
             {% for cover in covers %}
-            <a href="{% url 'class_lessons' cover.code %}" class="class-card" style="background-image: url('{{ cover.image_url }}');">
-                <div class="class-badge">{{ cover.name }}</div>
-                <div class="arrow">→</div>
+            <a href="{% url 'class_lessons' cover.code %}" class="class-card" style="background-image: url('{{ cover.image_url }}'); position: relative; aspect-ratio: 16 / 9; border-radius: 30px; background-size: cover; background-position: center; text-decoration: none; overflow: hidden; display: flex; align-items: flex-end; padding: 25px; box-shadow: var(--card-shadow); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s; transform-style: preserve-3d;">
+                <div class="class-card-overlay" style="content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%); z-index: 1;"></div>
+                <div class="class-badge" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 10px 20px; border-radius: 20px; font-weight: 600; position: relative; z-index: 2; font-size: 16px;">{{ cover.name }}</div>
+                <div class="arrow" style="position: absolute; right: 25px; bottom: 25px; color: white; font-size: 28px; z-index: 2; transition: transform 0.3s;">→</div>
             </a>
             {% endfor %}
         </div>
@@ -57,7 +47,15 @@
 </div>
 
 <style>
-    /* --- 3D СТЕКЛО (Glassmorphism) --- */
+    /* Дополнительные стили для 3D-эффекта при наведении */
+    .class-card:hover {
+        transform: translateY(-15px) scale(1.02) rotateX(5deg) rotateY(5deg);
+        box-shadow: 0 25px 50px var(--primary-glow);
+    }
+    .class-card:hover .arrow {
+        transform: translateX(10px);
+    }
+    /* Стили для стеклянных панелей */
     .glass-panel {
         background: var(--glass-bg);
         backdrop-filter: blur(15px);
@@ -66,81 +64,6 @@
         box-shadow: var(--card-shadow);
         border-radius: 30px;
     }
-
-    /* --- БАННЕР --- */
-    .hero-section {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-        margin-bottom: 60px;
-        padding: 40px;
-        border-radius: 40px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(15px);
-        border: 1px solid var(--glass-border);
-    }
-    .hero-text { flex: 1; }
-    .hero-image { flex: 1; height: 350px; border-radius: 30px; overflow: hidden; }
-    .hero-image img { width: 100%; height: 100%; object-fit: cover; }
-    .main-title { font-size: 56px; color: var(--primary-color); margin: 0 0 20px 0; line-height: 1.1; text-shadow: 0 4px 20px var(--primary-glow); }
-    .main-subtitle { font-size: 18px; line-height: 1.6; }
-    @media (max-width: 768px) {
-        .hero-section { flex-direction: column; }
-    }
-
-    .section-title { font-size: 28px; margin-bottom: 30px; color: var(--text-main); border-left: 5px solid var(--primary-color); padding-left: 15px; }
-
-    /* --- ОБЪЯВЛЕНИЯ --- */
-    .announcements-section { margin-bottom: 60px; }
-    .carousel-container { overflow: hidden; border-radius: 30px; }
-    .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
-    .announcement-card { min-width: 100%; display: flex; gap: 30px; padding: 30px; align-items: center; }
-    .ann-img { width: 300px; height: 200px; object-fit: cover; border-radius: 20px; }
-    .ann-content h3 { font-size: 24px; margin: 0 0 15px 0; }
-    .ann-link { display: inline-block; margin-top: 15px; color: var(--primary-color); text-decoration: none; font-weight: 600; }
-
-    /* --- КЛАССЫ (16:9 и 3D) --- */
-    .classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-    .class-card {
-        position: relative;
-        aspect-ratio: 16 / 9; /* Идеальное соотношение 16:9 */
-        border-radius: 30px;
-        background-size: cover;
-        background-position: center;
-        text-decoration: none;
-        overflow: hidden;
-        display: flex;
-        align-items: flex-end;
-        padding: 25px;
-        box-shadow: var(--card-shadow);
-        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s;
-        transform-style: preserve-3d;
-    }
-    .class-card:hover {
-        transform: translateY(-15px) scale(1.02) rotateX(5deg) rotateY(5deg);
-        box-shadow: 0 25px 50px var(--primary-glow);
-    }
-    .class-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
-        z-index: 1;
-    }
-    .class-badge {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 20px;
-        font-weight: 600;
-        position: relative;
-        z-index: 2;
-        font-size: 16px;
-    }
-    .arrow { position: absolute; right: 25px; bottom: 25px; color: white; font-size: 28px; z-index: 2; transition: transform 0.3s; }
-    .class-card:hover .arrow { transform: translateX(10px); }
 </style>
 
 <script>
@@ -149,13 +72,13 @@
         const track = document.getElementById('carouselTrack');
         if (!track) return;
         const cards = track.querySelectorAll('.announcement-card');
-        if (cards.length <= 1) return; // Если одно объявление, не крутим
+        if (cards.length <= 1) return;
 
         let currentIndex = 0;
         setInterval(() => {
             currentIndex = (currentIndex + 1) % cards.length;
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        }, 5000); // 5000 мс = 5 секунд
+        }, 5000);
     });
 </script>
 {% endblock %}

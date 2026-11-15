@@ -62,15 +62,26 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
-            padding: 15px 0;
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            transition: background 0.5s;
+            text-align: center; /* Центрируем */
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .header-content { display: flex; align-items: center; justify-content: space-between; }
-        .logo-text { font-size: 20px; color: var(--primary-color); text-decoration: none; }
+        .header-content {
+            display: flex;
+            flex-direction: column; /* Элементы друг под другом */
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-text {
+            font-size: 28px; /* Крупнее */
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
         
         nav { display: flex; align-items: center; gap: 20px; }
         nav a { text-decoration: none; color: var(--text-main); font-weight: 400; font-size: 14px; transition: color 0.3s; }
@@ -106,11 +117,7 @@
     <header>
         <div class="container header-content">
             <a href="{% url 'home' %}" class="logo">
-                {% if settings and settings.logo %}
-                    <img src="{{ settings.logo.url }}" alt="Логотип" style="max-height: 40px;">
-                {% else %}
-                    <span class="logo-text">РАЗГОВОРЫ О ВАЖНОМ</span>
-                {% endif %}
+                <span class="logo-text">РАЗГОВОРЫ О ВАЖНОМ</span>
             </a>
             <nav>
                 <a href="{% url 'home' %}">Главная</a>
