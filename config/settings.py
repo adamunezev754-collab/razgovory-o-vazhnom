@@ -21,10 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-вставьте_сюда_ваш_секретный_ключ_из_старого_файла'
+SECRET_KEY = 'django-insecure-!8@#f$g%^&*()_+qwertyuiopasdfghjklzxcvbnm1234567890'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,7 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # <-- WhiteNoise для статики
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,7 +78,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DATABASE_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -128,8 +127,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Настройки для загрузки файлов
 MEDIA_URL = '/media/'
-import os
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+MEDIA_ROOT = os.environ.get('MEDIA_PATH', os.path.join(BASE_DIR, 'media'))
 
 # Настройки дизайна админки (Jazzmin)
 JAZZMIN_SETTINGS = {
@@ -147,4 +145,6 @@ JAZZMIN_SETTINGS = {
 
 # Доверенные источники для CSRF (важно для работы админки на хостинге)
 CSRF_TRUSTED_ORIGINS = ['https://razgovory-o-vazhnom.de2.netrun.io']
+
+# WhiteNoise для раздачи статики (сбор стилей админки)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
