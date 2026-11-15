@@ -1,91 +1,104 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Разговоры о важном{% endblock %}</title>
     
-    <!-- Подключаем Dela Gothic One для заголовков и Inter для текста -->
+    <!-- Подключаем Unbounded -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМ --- */
         :root {
-            --primary-color: #2563eb; /* Глубокий синий */
+            --primary-color: #2563eb;
             --primary-glow: rgba(37, 99, 235, 0.4);
-            --bg-color: #f8fafc; /* Очень светлый серо-голубой */
-            --text-color: #1e293b; /* Темно-серый */
-            --card-bg: rgba(255, 255, 255, 0.7); /* Полупрозрачный белый */
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
+
+        /* Темная тема */
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --primary-glow: rgba(96, 165, 250, 0.4);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* --- БАЗОВЫЕ СТИЛИ --- */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 300; /* Обычный текст — легкий */
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-            color: var(--text-color);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background 0.5s, color 0.5s;
         }
-        /* Все заголовки и логотип — новым шрифтом */
-        h1, h2, h3, .logo-text {
-            font-family: 'Dela Gothic One', sans-serif;
-            font-weight: 400; /* У этого шрифта есть только Regular */
-            letter-spacing: 0.5px;
-        }
-        
+
+        /* Типографика: заголовки жирные, обычный текст полужирный */
+        h1, h2, h3, h4, .logo-text { font-weight: 800; letter-spacing: 1px; }
+        p, a, span, div { font-weight: 400; }
+        .text-light { font-weight: 300; }
+
+        /* --- ШАПКА --- */
         header {
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px); /* Эффект стекла */
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
             padding: 15px 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background 0.5s;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .header-content { display: flex; align-items: center; justify-content: space-between; }
+        .logo-text { font-size: 20px; color: var(--primary-color); text-decoration: none; }
+        
+        nav { display: flex; align-items: center; gap: 20px; }
+        nav a { text-decoration: none; color: var(--text-main); font-weight: 400; font-size: 14px; transition: color 0.3s; }
+        nav a:hover { color: var(--primary-color); }
+
+        /* Кнопка переключения темы */
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            transition: all 0.3s;
         }
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo img {
-            max-height: 50px;
-        }
-        .logo-text {
-            font-size: 20px;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        nav a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: var(--primary-color);
-        }
-        main {
-            flex: 1;
-            padding: 40px 0;
-        }
+        .theme-toggle:hover { transform: scale(1.05); }
+
+        main { flex: 1; padding: 40px 0; }
         footer {
-            background-color: rgba(255, 255, 255, 0.8);
+            background: var(--glass-bg);
             text-align: center;
-            padding: 25px 0;
-            color: #64748b;
-            font-size: 13px;
-            margin-top: auto;
-            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            border-top: 1px solid var(--glass-border);
         }
     </style>
 </head>
@@ -94,13 +107,14 @@
         <div class="container header-content">
             <a href="{% url 'home' %}" class="logo">
                 {% if settings and settings.logo %}
-                    <img src="{{ settings.logo.url }}" alt="Логотип">
+                    <img src="{{ settings.logo.url }}" alt="Логотип" style="max-height: 40px;">
                 {% else %}
                     <span class="logo-text">РАЗГОВОРЫ О ВАЖНОМ</span>
                 {% endif %}
             </a>
             <nav>
                 <a href="{% url 'home' %}">Главная</a>
+                <button class="theme-toggle" onclick="toggleTheme()">🌗 Тема</button>
             </nav>
         </div>
     </header>
@@ -114,5 +128,22 @@
             &copy; 2026. Система «Разговоры о важном».
         </div>
     </footer>
+
+    <script>
+        // Логика переключения темы
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Применяем сохраненную тему при загрузке
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+    </script>
 </body>
 </html>

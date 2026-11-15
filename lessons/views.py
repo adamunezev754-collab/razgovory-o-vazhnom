@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from .models import Lesson, SiteSettings, Document, ClassCover
+from .models import Lesson, SiteSettings, Document, ClassCover, Announcement
 
 def home(request):
     settings = SiteSettings.objects.first()
     documents = Document.objects.all()
+    announcements = Announcement.objects.filter(is_active=True)
     
     covers_list = [
         {'code': '1-2', 'name': '1-2 классы', 'default_img': 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=400'},
@@ -25,6 +26,7 @@ def home(request):
     return render(request, 'lessons/home.html', {
         'settings': settings,
         'documents': documents,
+        'announcements': announcements,
         'covers': covers_list
     })
 

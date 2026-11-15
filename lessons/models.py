@@ -1,7 +1,8 @@
 from django.db import models
 
 class SiteSettings(models.Model):
-    logo = models.ImageField(upload_to='logos/', verbose_name="Логотип сайта (Админка и Сайт)", blank=True, null=True)
+    logo = models.ImageField(upload_to='logos/', verbose_name="Логотип сайта (Верхнее меню)", blank=True, null=True)
+    main_logo = models.ImageField(upload_to='logos/', verbose_name="Логотип для главной (Сбоку)", blank=True, null=True)
 
     class Meta:
         verbose_name = "Настройки сайта"
@@ -55,7 +56,7 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = "Занятие"
         verbose_name_plural = "Занятия"
-        ordering = ['-date'] 
+        ordering = ['-date']
 
     def __str__(self):
         return f"{self.title} ({self.date})"
@@ -75,6 +76,21 @@ class LessonMaterial(models.Model):
     class Meta:
         verbose_name = "Материал занятия"
         verbose_name_plural = "Материалы занятия"
+
+    def __str__(self):
+        return self.title
+
+# НОВАЯ МОДЕЛЬ: Объявления
+class Announcement(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Заголовок объявления")
+    description = models.TextField(verbose_name="Описание", blank=True)
+    image = models.ImageField(upload_to='announcements/', verbose_name="Картинка объявления", blank=True, null=True)
+    link = models.URLField(verbose_name="Ссылка (куда ведет при нажатии)", blank=True)
+    is_active = models.BooleanField(default=True, verbose_name="Показывать на сайте")
+
+    class Meta:
+        verbose_name = "Объявление"
+        verbose_name_plural = "Объявления"
 
     def __str__(self):
         return self.title

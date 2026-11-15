@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lesson, SiteSettings, Document, ClassCover, LessonMaterial
+from .models import Lesson, SiteSettings, Document, ClassCover, LessonMaterial, Announcement
 
 class LessonMaterialInline(admin.TabularInline):
     model = LessonMaterial
@@ -11,7 +11,7 @@ class LessonMaterialInline(admin.TabularInline):
 class SiteSettingsAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return not SiteSettings.objects.exists()
-    verbose_name = "Настройки"
+    verbose_name = "Настройки сайта"
     verbose_name_plural = "Настройки сайта"
 
 @admin.register(Document)
@@ -26,6 +26,13 @@ class ClassCoverAdmin(admin.ModelAdmin):
     verbose_name = "Обложка класса"
     verbose_name_plural = "Обложки классов"
 
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = ('title', 'is_active')
+    list_editable = ('is_active',)
+    verbose_name = "Объявление"
+    verbose_name_plural = "Объявления"
+
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'get_audience', 'is_published')
@@ -34,7 +41,6 @@ class LessonAdmin(admin.ModelAdmin):
     verbose_name = "Занятие"
     verbose_name_plural = "Занятия"
 
-    # Добавили поле files_later в отображение формы
     fieldsets = (
         ('Основная информация', {
             'fields': ('title', 'date', 'target_audience', 'for_all_classes', 'description', 'cover_image', 'files_later', 'is_published')
